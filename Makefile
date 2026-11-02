@@ -2,7 +2,7 @@
 # Expanded when a recipe runs, so `make install cases` sees the venv install just created.
 PY ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; else echo python3; fi)
 
-.PHONY: install cases text naive score site all test serve clean
+.PHONY: install cases text naive score site all test server-deps serve clean
 
 all: cases text naive site
 
@@ -42,7 +42,14 @@ test: .venv/bin/python
 	fi
 	$(PY) -m pytest -q tests
 
-serve:
+server-deps: .venv/bin/python
+	@if command -v uv >/dev/null 2>&1; then \
+		uv pip install --python .venv/bin/python -r requirements-server.txt; \
+	else \
+		.venv/bin/python -m pip install -r requirements-server.txt; \
+	fi
+
+serve: server-deps
 	$(PY) -m crtest.server --root . --store submissions --port 8765
 
 clean:

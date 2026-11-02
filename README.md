@@ -49,13 +49,16 @@ should raise, and a scorer. Built for the [ContractRadar pilot](https://discord.
 
 ## Quick start
 
+Regenerating documents (`make cases`) and re-running the naive extraction (`make naive`) need Poppler (`pdftotext`, `pdftoppm`): `brew install poppler` on macOS, `sudo apt-get install poppler-utils` on Debian/Ubuntu. Tesseract is only for `make text` and `extract_llm --ocr`.
+
 ```bash
-pip install -r requirements.txt       # reportlab, pypdf, Pillow
-# system tools: poppler-utils (pdftotext, pdftoppm); tesseract-ocr only for --ocr
+make install      # creates .venv and installs the Python packages
 make cases        # regenerate PDFs, gold labels, page images
 make naive        # run the naive baseline and score it
 make site         # build site/dist
 ```
+
+`make` uses `.venv/bin/python` when that file exists, so you do not need to activate the venv. `make install` does not install Poppler. `make cases` and `make naive` stop and print the install command when it is missing.
 
 Score your own extractor: write predictions as
 

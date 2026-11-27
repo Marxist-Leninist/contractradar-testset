@@ -12,6 +12,7 @@ def test_site_has_submit_page_and_community_table(tmp_path):
     assert 'id="community-board"' in index and 'href="submit.html"' in index and "static/community.js" in index
     submit = (out / "submit.html").read_text(encoding="utf-8")
     assert "/mcp" in submit and "submit_results" in submit and "crtest.submit" in submit
+    assert 'id="tensorfold"' in submit and "tensorfold serve" in submit and "LLM_BASE_URL=http://127.0.0.1:8080/v1" in submit
     js = (out / "static" / "community.js").read_text(encoding="utf-8")
     assert "textContent" in js and "innerHTML" not in js
     assert (out / "cases" / "CR-005" / "text.txt").exists()

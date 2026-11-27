@@ -491,6 +491,25 @@ python -m crtest.submit --pred results/my_model.json --contact https://github.co
 <p>For a row in the curated table instead, open a pull request adding <code>results/&lt;name&gt;.json</code> and its
 <code>.scored.json</code>, with the model, endpoint and mode (text, OCR, vision) in <code>description</code>.</p>
 
+<h2 id="tensorfold">4. A local model with TensorFold</h2>
+<p><a href="https://github.com/ashhart/TensorFold">TensorFold</a> serves a model on your own Apple Silicon Mac or NVIDIA GPU
+with an OpenAI-compatible API, so <code>crtest.extract_llm</code> runs against it unchanged and nothing leaves your machine.
+Install it and pull a checkpoint as in its <a href="https://github.com/ashhart/TensorFold#quick-start">quick start</a>, then:</p>
+<pre><code># terminal 1: serve the checkpoint. Contract text plus a reply of up to 4,000 tokens needs a long
+# context; raise --context if a case is cut off. Thinking off keeps the reply to the JSON.
+tensorfold serve &lt;checkpoint&gt; --name local-model --context 32768 --no-thinking
+
+# terminal 2: run, score and submit. extract_llm needs LLM_API_KEY set; any placeholder does for a
+# local server with no key. Local models can be slow, so give each case more time.
+export LLM_BASE_URL=http://127.0.0.1:8080/v1 LLM_API_KEY=local LLM_MODEL=local-model LLM_TIMEOUT=600
+python -m crtest.extract_llm --out results/tensorfold_my_model.json --ocr --name "&lt;checkpoint&gt; via TensorFold"
+python -m crtest.score --pred results/tensorfold_my_model.json
+python -m crtest.submit --pred results/tensorfold_my_model.json --contact https://github.com/you \\
+    --description "TensorFold &lt;release&gt;, &lt;checkpoint&gt;@&lt;revision&gt;, &lt;quantisation&gt;, &lt;hardware&gt;, context 32768, thinking off, text+OCR"</code></pre>
+<p>Put everything needed to reproduce the row in <code>description</code>: the TensorFold release, the checkpoint and its
+revision, the quantisation, the hardware (for example "M3 Max 64 GB" or "RTX 4090"), the context length, whether thinking
+was on, and the mode. Add <code>--vision</code> only if the checkpoint takes images.</p>
+
 <h2 id="rules">Rules</h2>
 <ul>
 <li><b>Honour system.</b> The gold labels ship with the cases. Don't read them while extracting: a perfect score copied from the gold tells nobody anything.</li>

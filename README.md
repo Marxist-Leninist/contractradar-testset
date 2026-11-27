@@ -150,3 +150,12 @@ If you think a check is wrong, open an issue citing the section.
 ## Contributing
 
 See `CONTRIBUTING.md`. The most useful things right now: more layout variants of the three pain points named in the pilot thread (tables without set boundaries, grouped ID rows such as dates, page boundaries), results from more extractors, and hand-labelled real notices with provenance.
+
+## Contributors
+
+- [@Marxist-Leninist](https://github.com/Marxist-Leninist) and [@MarxEngelsLeninStalin](https://github.com/MarxEngelsLeninStalin): built and maintain the test set, scorer, site and MCP server.
+- [@Ald4ker](https://github.com/Ald4ker): recorded Nemotron 3 Ultra results for TB-001 and TB-003 (#1).
+- [@mkarots](https://github.com/mkarots): install without Poppler (#2) and the Gemini 3.5 Flash-Lite vision+text row (#3).
+- [Chronara AI Ltd](https://chronara.io) ([@CG-8663](https://github.com/CG-8663)): instructions for running a local model with TensorFold (#4).
+
+Add yourself here in the same pull request as your contribution.
